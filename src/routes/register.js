@@ -3,6 +3,21 @@ import bcrypt from "bcrypt";
 import User from "../models/User.js";
 import path from "path";
 import multer from "multer";
+import { createTransport } from "nodemailer";
+
+const registerRouter = Router();
+
+const TEST_MAIL = "delphia18@ethereal.email";
+const PASS_MAIL = "CAHsnxSDhhttRRasPz@ethereal.email";
+
+const transporter = createTransport({
+  host: "smtp.ethereal.email",
+  port: 587,
+  auth: {
+    user: TEST_MAIL,
+    pass: PASS_MAIL,
+  },
+});
 
 const storage = multer.diskStorage({
   destination: "./src/public/img",
@@ -10,8 +25,6 @@ const storage = multer.diskStorage({
     cb(null, file.originalname);
   },
 })
-
-const registerRouter = Router();
 
 registerRouter.use(multer({
   storage: storage,
@@ -48,8 +61,34 @@ registerRouter.post("/", (req, res) => {
           birthDate,
           phoneNumber,
         });
+
+        if (req.file) {
+          const { filename } = req.file;
+          newUser.setImgUrl(filename);
+        }
+
+        try {
+          const emailContent = {
+            from: "Sitio Web",
+            to: TEST_MAIL,
+            subject: "Nuevo registro",
+            text: `Usuario: ${username}
+                  Contraseña: ${hashedPassword}
+                  Email: ${email}
+                  Dirección: ${direction}
+                  F. de nacimiento: ${birthDate}
+                  Teléfono: ${phoneNumber}`,
+          };
+          const info = await transporter.sendMail(emailContent);
+          
+          console.log(info);
+          return info;
+
+        } catch (err) {
+          console.log(err);
+        }
+
         await newUser.save();
-        console.log(req.file);
         res.redirect("/api/login");
       }
     });

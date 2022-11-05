@@ -3,6 +3,9 @@ import loginRouter from "./login.js";
 import registerRouter from "./register.js";
 import logoutRouter from "./logout.js";
 import mainRouter from "./main.js";
+import profileRouter from "./profile.js";
+import productsRouter from "./products.js";
+import cartRouter from "./cart.js";
 import { dataProd } from "../db/dataProd.js";
 import log4js  from "log4js";
 
@@ -15,6 +18,9 @@ router.use("/login", loginRouter);
 router.use("/register", registerRouter);
 router.use("/logout", logoutRouter);
 router.use("/main", mainRouter);
+router.use("/profile", profileRouter);
+router.use("/products", productsRouter);
+router.use("/cart", cartRouter);
 
 log4js.configure({
   appenders: {

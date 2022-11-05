@@ -1,27 +1,38 @@
 <div class="container text-center my-3">
-  <div class="jumbotron" style="background-color: green;color: white;">
-    <h1>USER OK LOGIN!</h1>
-    <h2><i>Bienvenido {{data.username}}</i></h2>
-    <br />
-    <h3>dirección: {{data.email}}</h3>
-    <button
-      class="btn btn-danger my-5"
-      onclick="location.href='/api/logout'"
-    >
-        SALIR
-    </button>
-  </div>
-
-  <div class="container w-75 mt-5 p-4 bg-dark text-white">
-    <h2 class="mb-4">Agregar producto</h2>
-    <form action="/api" method="POST" class="d-flex flex-column">
-      <input class="form-control mb-3" type="text" placeholder="Nombre del producto" id="title" name="title">
-      <input class="form-control mb-3" type="number" placeholder="Precio del producto" id="price" name="price">
-      <input class="form-control mb-3" type="text" placeholder="Imágen del producto (url)" id="thumbnail" name="thumbnail">
-      <div class="d-flex justify-content-end">
-        <input class="text-white btn btn-warning" type="submit" value="Agregar">
-      </div>
-    </form>
+  
+  <div class="header d-flex justify-content-between">
+    <button onclick="location.href='/api/main'"><h1>LOGO</h1></button>
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <img src={{data.imgUrl}} alt="avatar" />
+      </button>
+      <ul class="dropdown-menu">
+        <li>
+          <button
+            class="dropdown-item"
+            onclick="location.href='/api/profile'"
+          >
+            Perfil
+          </button>
+        </li>
+        <li>
+          <button
+            class="dropdown-item"
+            onclick="location.href='/api/cart'"
+          >
+            Carrito
+          </button>
+        </li>
+        <li>
+          <button
+            class="dropdown-item"
+            onclick="location.href='/api/logout'"
+          >
+            Salir
+          </button>
+        </li>
+      </ul>
+    </div>
   </div>
     
   <div class="container mt-5">
@@ -31,6 +42,7 @@
           <th scope="col">Nombre</th>
           <th scope="col">Precio</th>
           <th scope="col">Imágen</th>
+          <th></th>
         </tr>
       </thead>
       <tbody class="productsList">
@@ -39,6 +51,9 @@
             <td>{{title}}</td>
             <td>{{price}}</td>
             <td><img class="img-thumbnail" style="height: 75px; width: 75px;" src="{{thumbnail}}" /></td>
+            <td>
+              <button class="btn btn-success btn-sm my-3" id="addToCart" data-productid={{_id}} data-userid={{../data._id}}>Agregar al carrito</button>
+            </td>
           </tr>
         {{/each}}
       </tbody>

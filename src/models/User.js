@@ -25,6 +25,15 @@ const UserSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  imgUrl: {
+    type: String,
+  },
 });
+
+UserSchema.methods.setImgUrl = function setImgUrl(filename) {
+  const HOST = 'http://localhost';
+  const PORT = process.env.PORT || 3000;
+  this.imgUrl = `${HOST}:${PORT}/img/${filename}`
+}
 
 export default mongoose.model("User", UserSchema);
