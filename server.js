@@ -13,10 +13,25 @@ import "./src/db/config.js";
 import router from "./src/routes/index.js";
 import dotenv from "dotenv";
 import compression from "compression";
+import log4js  from "log4js";
 
 dotenv.config();
 
+log4js.configure({
+    appenders: {
+      miLoggerConsole: { type: "console" },
+      miLoggerFile: { type: "file", filename: "error.log" },
+    },
+    categories: {
+      default: { appenders: ["miLoggerConsole"], level: "info" },
+      error: { appenders: ["miLoggerFile"], level: "error" },
+    },
+});
+
 const app = express();
+
+const logger = log4js.getLogger();
+const errorLogger = log4js.getLogger("error");
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -90,8 +105,8 @@ app.get("/", (req, res) => {
 });
 
 const server = app.listen(PORT, () => {
-  console.log(`Servidor escuchando en puerto ${PORT}`);
+  logger.info(`Servidor escuchando en puerto ${PORT}`);
 });
 server.on("error", (error) => {
-  console.error(`Error en el servidor ${error}`);
+  errorLogger.error(`Error en el servidor ${error}`);
 });

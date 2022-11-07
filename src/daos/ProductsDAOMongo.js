@@ -1,5 +1,19 @@
 import MongoDbContainer from "../containers/MongoDbContainer.js";
 import { ProductModel } from "../models/Product.js";
+import log4js  from "log4js";
+
+log4js.configure({
+    appenders: {
+      miLoggerConsole: { type: "console" },
+      miLoggerFile: { type: "file", filename: "error.log" },
+    },
+    categories: {
+      default: { appenders: ["miLoggerConsole"], level: "info" },
+      error: { appenders: ["miLoggerFile"], level: "error" },
+    },
+});
+
+const errorLogger = log4js.getLogger("error");
 
 class ProductsDAOMongo extends MongoDbContainer {
     constructor(){
@@ -12,7 +26,7 @@ class ProductsDAOMongo extends MongoDbContainer {
             const savedProduct = await newProduct.save();
             return savedProduct;
         } catch (err) {
-            console.log(`There has been an error: ${err}`);
+            errorLogger.error(err);
         }
     }
 }

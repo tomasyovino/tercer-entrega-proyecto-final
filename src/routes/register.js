@@ -4,15 +4,29 @@ import User from "../models/User.js";
 import path from "path";
 import multer from "multer";
 import { createTransport } from "nodemailer";
+import log4js  from "log4js";
+
+log4js.configure({
+    appenders: {
+      miLoggerConsole: { type: "console" },
+      miLoggerFile: { type: "file", filename: "error.log" },
+    },
+    categories: {
+      default: { appenders: ["miLoggerConsole"], level: "info" },
+      error: { appenders: ["miLoggerFile"], level: "error" },
+    },
+});
+
+const logger = log4js.getLogger();
+const errorLogger = log4js.getLogger("error");
 
 const registerRouter = Router();
 
-const TEST_MAIL = "delphia18@ethereal.email";
-const PASS_MAIL = "CAHsnxSDhhttRRasPz@ethereal.email";
+const TEST_MAIL = "examplecoder24@gmail.com";
+const PASS_MAIL = "zvybfprvfdbskakv";
 
 const transporter = createTransport({
-  host: "smtp.ethereal.email",
-  port: 587,
+  service: "gmail",
   auth: {
     user: TEST_MAIL,
     pass: PASS_MAIL,
@@ -81,11 +95,10 @@ registerRouter.post("/", (req, res) => {
           };
           const info = await transporter.sendMail(emailContent);
           
-          console.log(info);
-          return info;
+          logger.info(info);
 
         } catch (err) {
-          console.log(err);
+          errorLogger.error(err);
         }
 
         await newUser.save();

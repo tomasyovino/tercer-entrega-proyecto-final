@@ -1,6 +1,20 @@
 import MongoDbContainer from "../containers/MongoDbContainer.js";
 import { CartModel } from "../models/Cart.js";
 import { ProductModel } from "../models/Product.js";
+import log4js  from "log4js";
+
+log4js.configure({
+    appenders: {
+      miLoggerConsole: { type: "console" },
+      miLoggerFile: { type: "file", filename: "error.log" },
+    },
+    categories: {
+      default: { appenders: ["miLoggerConsole"], level: "info" },
+      error: { appenders: ["miLoggerFile"], level: "error" },
+    },
+});
+
+const errorLogger = log4js.getLogger("error");
 
 class CartsDAOMongo extends MongoDbContainer {
     constructor(){
@@ -13,7 +27,7 @@ class CartsDAOMongo extends MongoDbContainer {
             const savedProduct = await newCart.save();
             return savedProduct;
         } catch (err) {
-            console.log(`There has been an error: ${err}`);
+            errorLogger.error(err);
         }
     }
 
@@ -44,7 +58,7 @@ class CartsDAOMongo extends MongoDbContainer {
                 });
             };
         } catch (err) {
-            console.log(`There has been an error: ${err}`);
+            errorLogger.error(err);
         };
     };
 
@@ -53,7 +67,7 @@ class CartsDAOMongo extends MongoDbContainer {
             let cartProducts = await CartModel.findById(id, { "products": 1, "_id": 0 }).exec();
             return cartProducts;
         } catch (err) {
-            console.log(`There has been an error: ${err}`);
+            errorLogger.error(err);
         };
     };
 
@@ -71,7 +85,7 @@ class CartsDAOMongo extends MongoDbContainer {
                 return newCart;
               }
         } catch (err) {
-            console.log(`There has been an error: ${err}`);
+            errorLogger.error(err);
         };
     };
 
@@ -80,7 +94,7 @@ class CartsDAOMongo extends MongoDbContainer {
             let cart = await CartModel.updateOne({ "_id": id }, { $pull: {"products": { "_id": ObjectId(id_prod) }} } );
             return cart;
         } catch (err) {
-            console.log(`There has been an error: ${err}`);
+            errorLogger.error(err);
         };
     };
 };

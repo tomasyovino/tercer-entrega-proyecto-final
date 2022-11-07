@@ -1,5 +1,19 @@
 import express from "express";
 import ProductsDAOMongo from "../daos/ProductsDAOMongo.js";
+import log4js  from "log4js";
+
+log4js.configure({
+    appenders: {
+      miLoggerConsole: { type: "console" },
+      miLoggerFile: { type: "file", filename: "error.log" },
+    },
+    categories: {
+      default: { appenders: ["miLoggerConsole"], level: "info" },
+      error: { appenders: ["miLoggerFile"], level: "error" },
+    },
+});
+
+const errorLogger = log4js.getLogger("error");
 
 const productsRouter = express.Router();
 const productsDAO = new ProductsDAOMongo();
@@ -9,7 +23,7 @@ productsRouter.get("/", async (req, res) => {
         let products = await productsDAO.listAll();
         res.send(products);
     } catch (err) {
-        console.log(`There has been an error: ${err}`);
+        errorLogger.error(err);
     }
 });
 
@@ -19,7 +33,7 @@ productsRouter.get("/:id", async (req, res) => {
         let product = await productsDAO.list(id);
         res.send(product);
     } catch (err) {
-        console.log(`There has been an error: ${err}`);
+        errorLogger.error(err);
     }
 });
 
@@ -29,7 +43,7 @@ productsRouter.post("/", async (req, res) => {
         let savedProduct = await productsDAO.save({ title: title, price: price, thumbnail: thumbnail, quantity: 1 });
         res.send(savedProduct);
     } catch (err) {
-        console.log(`There has been an error: ${err}`);
+        errorLogger.error(err);
     }
 });
 
