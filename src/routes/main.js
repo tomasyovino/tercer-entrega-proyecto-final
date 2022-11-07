@@ -10,7 +10,6 @@ const productsDAO = new ProductsDAOMongo();
 mainRouter.get("/", auth, async (req, res) => {
     const userData = await User.findById(req.user._id).lean();
     const dataProd = await productsDAO.listAll();
-    console.log("Este es el id del usuario " + req.user._id)
     
     res.render("main", {
       data: userData,

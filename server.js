@@ -1,4 +1,7 @@
 import express from "express";
+import cluster  from "cluster";
+import http from "http";
+import os from "os";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import exphbs from "express-handlebars";
@@ -14,7 +17,6 @@ import router from "./src/routes/index.js";
 import dotenv from "dotenv";
 import compression from "compression";
 import log4js  from "log4js";
-
 dotenv.config();
 
 log4js.configure({
@@ -29,9 +31,9 @@ log4js.configure({
 });
 
 const app = express();
+const numCPUs = os.cpus().length;
 
 const logger = log4js.getLogger();
-const errorLogger = log4js.getLogger("error");
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -103,6 +105,29 @@ app.use("/api", router);
 app.get("/", (req, res) => {
     res.redirect("/api");
 });
+
+// if (cluster.isPrimary) {
+//   logger.info(`Num CPUs: ${numCPUs}`);
+//   logger.info(`I am the primary: ${process.pid}`);
+//   for (let i = 0; i < numCPUs; i++) {
+//     cluster.fork();
+//   };
+//   cluster.on("exit", (worker) => {
+//     logger.info(`${worker.process.pid} is finished`);
+//   });
+// } else {
+//   http
+//     .createServer((req, res) => {
+//       res.writeHead(200);
+//       res.end(
+//         `Server on ${PORT} - PID ${
+//           process.pid
+//         } - ${new Date().toLocaleString()}`
+//       );
+//     })
+//     .listen(PORT);
+//     logger.info(`Worker ${process.pid} started`)
+// }
 
 const server = app.listen(PORT, () => {
   logger.info(`Servidor escuchando en puerto ${PORT}`);

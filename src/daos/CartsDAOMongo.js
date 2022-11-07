@@ -91,7 +91,7 @@ class CartsDAOMongo extends MongoDbContainer {
 
     async deleteProduct(id, id_prod) {
         try {
-            let cart = await CartModel.updateOne({ "_id": id }, { $pull: {"products": { "_id": ObjectId(id_prod) }} } );
+            let cart = await CartModel.updateOne({ "_id": id }, { $pull: {"products": { "_id": id_prod }} } );
             return cart;
         } catch (err) {
             errorLogger.error(err);

@@ -6,7 +6,6 @@ import mainRouter from "./main.js";
 import profileRouter from "./profile.js";
 import productsRouter from "./products.js";
 import cartRouter from "./cart.js";
-import { dataProd } from "../db/dataProd.js";
 import log4js  from "log4js";
 
 const router = Router();
