@@ -1,35 +1,22 @@
-let addToCartBtn = document.getElementById("addToCart");
-let buyBtn = document.getElementById("buyBtn");
-let deleteBtn = document.getElementById("deleteBtn");
+function addToCartListener(clicked_id) {
+    let addToCartBtn = document.getElementById(clicked_id);
 
-const cartLogic = (btn) => {
-    btn.addEventListener("click", () => {
-        addToCart(btn);
-    });
+    if (addToCartBtn) {
+        addToCart(addToCartBtn);
+    };
 };
 
-const cartBuyLogic = (btn) => {
-    btn.addEventListener("click", () => {
-        buyHandle(btn);
-    });
+function deleteProductFromCartListener(clicked_id) {
+    let deleteBtn = document.getElementById(clicked_id);
+
+    if (deleteBtn) {
+        deleteProductFromCart(deleteBtn);
+    };
 };
 
-const deleteProductFromCartLogic = (btn) => {
-    btn.addEventListener("click", () => {
-        deleteProductFromCart(btn);
-    });
-};
-
-if (addToCartBtn) {
-    cartLogic(addToCartBtn);
-};
-
-if (buyBtn) {
-    cartBuyLogic(buyBtn);
-};
-
-if (deleteBtn) {
-    deleteProductFromCartLogic(deleteBtn);
+function cartBuyListener(clicked_id) {
+    let buyBtn = document.getElementById(clicked_id);
+    buyHandle(buyBtn); 
 };
 
 const addToCart = async (btn) => {
@@ -80,7 +67,6 @@ const deleteProductFromCart = async (btn) => {
         });
         const content = rawResponse.json();
         console.log(content);
-        console.log(btn);
     } catch (err) {
         console.log(`error: ${err.message}`);
     };

@@ -34,12 +34,12 @@ class CartsDAOMongo extends MongoDbContainer {
     async addProduct(userId, productId) {
         try {
             let cart = await CartModel.findOne({ userId });
-            let product = await ProductModel.findOne({ productId });
+            let product = await ProductModel.findOne({ _id: productId });
 
             if (cart) {
                 //cart exists for user
                 let itemIndex = cart.products.findIndex(p => p._id == productId);
-
+                
                 if (itemIndex > -1) {
                     //product exists in the cart, update the quantity
                     let productItem = cart.products[itemIndex];
@@ -89,10 +89,31 @@ class CartsDAOMongo extends MongoDbContainer {
         };
     };
 
-    async deleteProduct(id, id_prod) {
+    // async deleteProduct(id, id_prod) {
+    //     try {
+    //         let cart = await CartModel.updateOne({ _id: "636818fa182195b2b0b6b385" }, { $set: { products: { title: "Valor actualizado" }} } );
+    //         let 
+    //         // db.stores.updateMany(
+    //         //     { },
+    //         //     { $pull: { fruits: { $in: [ "apples", "oranges" ] }, vegetables: "carrots" } }
+    //         // )
+    //         return cart;
+    //     } catch (err) {
+    //         errorLogger.error(err);
+    //     };
+    // };
+    async deleteProduct(userId, productId) {
         try {
-            let cart = await CartModel.updateOne({ "_id": id }, { $pull: {"products": { "_id": id_prod }} } );
-            return cart;
+            let cart = await CartModel.findOne({ userId });
+
+            if (cart) {
+                let itemIndex = cart.products.findIndex(p => p._id == productId);
+                const arrayTemporal = cart.products;
+                if (itemIndex > -1) {
+                    arrayTemporal.splice(itemIndex, 1);
+                    await CartModel.updateOne({ userId: userId }, { $set: { products: arrayTemporal } } );
+                }
+            }
         } catch (err) {
             errorLogger.error(err);
         };

@@ -89,7 +89,8 @@ cartRouter.post("/buy", async (req, res) => {
 });
 
 cartRouter.delete("/product", async (req, res) => {
-  const data = await req.body;
+  const data = req.body;
+  console.log(data.userId, data.productId);
   const deleteProductFromCart = await cartsDAO.deleteProduct(data.userId, data.productId);
   res.send(deleteProductFromCart);
 });

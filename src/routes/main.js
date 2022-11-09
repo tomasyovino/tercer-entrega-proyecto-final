@@ -6,11 +6,10 @@ import { auth } from "../middlewares/auth.js";
 const mainRouter = Router();
 const productsDAO = new ProductsDAOMongo();
 
-
 mainRouter.get("/", auth, async (req, res) => {
     const userData = await User.findById(req.user._id).lean();
     const dataProd = await productsDAO.listAll();
-    
+
     res.render("main", {
       data: userData,
       productData: dataProd,

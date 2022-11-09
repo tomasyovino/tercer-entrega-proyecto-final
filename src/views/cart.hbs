@@ -53,13 +53,13 @@
                 <td>{{price}}</td>
                 <td><img class="img-thumbnail" style="height: 75px; width: 75px;" src="{{thumbnail}}" /></td>
                 <td>{{quantity}}</td>
-                <td><button class="btn btn-danger btn-sm my-3" id="deleteBtn" data-productid={{_id}} data-userid={{../userData._id}}>X</button></td>
+                <td><button class="btn btn-danger btn-sm my-3" id="deleteBtn{{_id}}" onclick="deleteProductFromCartListener(this.id)" data-productid={{_id}} data-userid={{../userData._id}}>X</button></td>
             </tr>
             {{/each}}
         </tbody>
         </table>
         <div class="d-flex justify-content-end" style="width: 100%;">
-            <button class="btn btn-success btn-sm my-3" id="buyBtn">Comprar</button>
+            <button class="btn btn-success btn-sm my-3" id="buyBtn" onclick="cartBuyListener(this.id)">Comprar</button>
         </div>
     </div>
 </div>

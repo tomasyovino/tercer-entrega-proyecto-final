@@ -52,7 +52,7 @@
             <td>{{price}}</td>
             <td><img class="img-thumbnail" style="height: 75px; width: 75px;" src="{{thumbnail}}" /></td>
             <td>
-              <button class="btn btn-success btn-sm my-3" id="addToCart" data-productid={{_id}} data-userid={{../data._id}}>Agregar al carrito</button>
+              <button class="btn btn-success btn-sm my-3" id="addToCart{{_id}}" onclick="addToCartListener(this.id)" data-productid={{_id}} data-userid={{../data._id}}>Agregar al carrito</button>
             </td>
           </tr>
         {{/each}}
