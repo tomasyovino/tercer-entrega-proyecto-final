@@ -51,7 +51,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      maxAge: 20000, //20 seg
+      maxAge: 120000, //2 minutos
     },
   })
 );
