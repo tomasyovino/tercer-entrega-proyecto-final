@@ -26,7 +26,7 @@ const USER_MAIL = "examplecoder24@gmail.com";
 const PASS_MAIL = "zvybfprvfdbskakv";
 
 const accountSid = "AC534ba76432f965c5909ac01251df04d9";
-const authToken = "0175e38ffd54d994f88e458f07be5b69";
+const authToken = "f027cd57cdde2cac01629a3b7a7fa12d";
 
 const client = twilio(accountSid, authToken);
 
